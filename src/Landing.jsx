@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -9,8 +9,8 @@ import {
   Menu,
 } from "lucide-react";
 import { Icon, Brand } from "./ui";
-import { Contour } from "./MotionArt";
 import ScrollStory from "./ScrollStory";
+import VideoHero from "./VideoHero";
 import LandingFooter from "./LandingFooter";
 import { FeatureConstellation, AudiencePanels } from "./ScrollShowcase";
 import {
@@ -20,7 +20,6 @@ import {
 } from "./LandingDetails";
 export default function Landing() {
   const [menu, setMenu] = useState(false);
-  const hero = useRef();
   const go = (e, id) => {
     e.preventDefault();
     document.getElementById(id).scrollIntoView({
@@ -36,10 +35,6 @@ export default function Landing() {
     const scroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        hero.current?.style.setProperty(
-          "--shift",
-          `${Math.min(scrollY * 0.12, 90)}px`,
-        );
         document.querySelectorAll(".intro,.clinician").forEach((el) => {
           const rect = el.getBoundingClientRect();
           const p = Math.max(
@@ -101,56 +96,7 @@ export default function Landing() {
         </button>
       </header>
       <main>
-        <section className="hero" ref={hero}>
-          <Contour />
-          <div className="hero-copy">
-            <h1>
-              See the sequence.
-              <br />
-              Understand the skill.
-            </h1>
-            <p>
-              AI-assisted surgical video review. Every step
-              <br className="desktop-break" /> connected to the evidence behind
-              it.
-            </p>
-            <div className="actions">
-              <a className="button primary" href="#/case/OC-0248">
-                Explore a sample <Icon icon={ArrowUpRight} />
-              </a>
-              <a
-                className="text-link"
-                href="#workflow"
-                onClick={(e) => go(e, "workflow")}
-              >
-                Discover the workflow <Icon icon={ArrowRight} />
-              </a>
-            </div>
-          </div>
-          <div className="hero-art" aria-hidden="true">
-            <img src="/assets/hero-sequence.png" alt="" />
-            <span className="art-label">Step 03 · Review segment</span>
-          </div>
-          <div className="hero-timeline">
-            {[
-              "Access",
-              "Identification",
-              "Dissection",
-              "Division",
-              "Closure",
-            ].map((x, i) => (
-              <div key={x} className={i === 2 ? "active" : ""}>
-                <i />
-                {x}
-              </div>
-            ))}
-            <small>Illustrative procedure sequence</small>
-          </div>
-          <div className="hero-foot">
-            <span>A procedure is more than its outcome.</span>
-            <span>01 / The approach</span>
-          </div>
-        </section>
+        <VideoHero onWorkflow={(e) => go(e, "workflow")} />
         <ScrollStory />
         <FeatureConstellation />
         <section id="workflow" className="section workflow" data-reveal>
